@@ -1,0 +1,24 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "plugins": ["node", "prettier"],
+  "extends": ["prettier", "plugin:node/recommended"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      { "singleQuote": true },
+      { "bracketSpacing": true }
+    ],
+    "no-unused-vars": "warn",
+    "no-plusplus": "off",
+    "no-console": "warn",
+    "consistent-return": "off"
+  }
+}

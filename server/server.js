@@ -1,12 +1,24 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
+import express from 'express';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+import config from './config/config.env.js';
+import connect from './config/db.js';
+
+import postRoute from './routes/posts.routes.js';
+
+const { PORT, MONGO_URL } = config;
 
 const app = express();
-const config = require('./config/config.env');
+connect(MONGO_URL);
 
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+app.use(cors());
+
+app.use('/post', postRoute);
 
 app.use((req, res) => {
   res.status(404).json({
@@ -15,6 +27,6 @@ app.use((req, res) => {
   });
 });
 
-app.listen(config.PORT, () => {
-  console.log(`app is running on port ${config.PORT}`);
+app.listen(PORT, () => {
+  console.log(`app is running on port ${PORT}`);
 });

@@ -4,8 +4,8 @@ const { Schema, model } = mongoose;
 
 const postSchema = new Schema({
   title: String,
-  message: String,
-  creator: String,
+  body: String,
+  author: String,
   tags: [String],
   selectedFile: String,
   likeCount: {

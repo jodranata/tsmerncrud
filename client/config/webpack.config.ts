@@ -112,6 +112,12 @@ const webpackConf: webpack.ConfigurationFactory = (
       open: true,
       port: 3000,
       hot: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8000',
+          pathRewrite: { '/api': '' },
+        },
+      },
     },
     module: {
       strictExportPresence: true,

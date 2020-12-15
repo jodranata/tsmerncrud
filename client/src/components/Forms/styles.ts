@@ -13,12 +13,18 @@ export default makeStyles((theme: Theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    flexDirection: 'column',
     '& > *': {
       margin: '8px 0',
     },
   },
+  buttons: {
+    width: '50%',
+    minWidth: '150px',
+    margin: '5px auto',
+  },
   fileInput: {
-    width: '97%',
+    textAlign: 'center',
     margin: '10px 0',
   },
   buttonSubmit: {

@@ -1,10 +1,13 @@
 import {
   CREATE_POST,
+  GET_POSTS,
   GetPostsActionTypes,
   CreatePostActionTypes,
+  SetErrorActionTypes,
   PostDetailTypes,
   DataStateTypes,
   PostActions,
+  SET_ERROR,
 } from '../types';
 
 const INIT_STATE = {
@@ -28,9 +31,13 @@ const handleGetPosts = (
   posts: action.payload,
 });
 
-const handleSetError = () => {};
-
-const handleClearError = () => {};
+const handleSetError = (
+  state: DataStateTypes<PostDetailTypes>,
+  action: SetErrorActionTypes,
+): DataStateTypes<PostDetailTypes> => ({
+  ...state,
+  error: action.payload,
+});
 
 const postsReducer = (
   state: DataStateTypes<PostDetailTypes> = INIT_STATE,
@@ -39,6 +46,10 @@ const postsReducer = (
   switch (action.type) {
     case CREATE_POST:
       return handleCreatePost(state, action);
+    case GET_POSTS:
+      return handleGetPosts(state, action);
+    case SET_ERROR:
+      return handleSetError(state, action);
     default:
       return state;
   }

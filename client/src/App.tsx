@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -12,8 +13,14 @@ import useStyles from './styles';
 import Posts from './components/Posts/Posts';
 import Form from './components/Forms/Form';
 
+import { handleGetPosts } from './store/actions/postActions';
+
 const App = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(handleGetPosts());
+  }, [dispatch]);
   return (
     <Container maxWidth="lg">
       <AppBar position="static" className={classes.appBar}>

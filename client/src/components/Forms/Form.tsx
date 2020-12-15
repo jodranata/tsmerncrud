@@ -4,10 +4,14 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import CloudUpload from '@material-ui/icons/CloudUpload';
+
 import useStyles from './styles';
 
+import MuiTooltipButton from '../MuiComponents/MuiTooltipButton';
 import { PostDetailTypes } from '../../store/types';
 import { handleCreatePostAction } from '../../store/actions/postActions';
+import toBase64 from '../../helpers/convertBase64';
 
 const Form = () => {
   const classes = useStyles();
@@ -21,8 +25,10 @@ const Form = () => {
     tags: '',
     author: '',
     body: '',
+    selectedFile: '',
   });
-  const [selectedFile, setSelectedFile] = useState('');
+  const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer>('');
+  const [selectedFileName, setSelectedFileName] = useState('Posts image');
 
   const handleSubmit = (
     e:
@@ -30,7 +36,13 @@ const Form = () => {
       | React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
-    const data: PostDetailTypes = { title, author, tags, body: post };
+    const data: PostDetailTypes = {
+      title,
+      author,
+      tags,
+      body: post,
+      selectedFile,
+    };
     // const emptyField = Object.keys(data).filter((key: string) => !data[key]);
     if (!title || !author || !post || !tags) {
       return Object.keys(data).forEach((field: string) =>
@@ -40,8 +52,39 @@ const Form = () => {
         })),
       );
     }
-    setFormError({ title: '', tags: '', author: '', body: '' });
+    setFormError({
+      title: '',
+      tags: '',
+      author: '',
+      body: '',
+      selectedFile: '',
+    });
     dispatch(handleCreatePostAction(data));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const image = e.target.files ? e.target.files[0] : null;
+    if (image) {
+      toBase64(
+        image,
+        (
+          err: string | null,
+          data?: string | ArrayBuffer | null | undefined,
+        ) => {
+          if (err) return setSelectedFileName(err);
+          if (data) {
+            setSelectedFileName(image.name);
+            setSelectedFile(data);
+          }
+        },
+      );
+    }
+  };
+  const handleMuiButtonClick = () => {
+    const imageInput = document.querySelector(
+      '#input-image',
+    ) as HTMLButtonElement;
+    imageInput.click();
   };
 
   return (
@@ -100,7 +143,27 @@ const Form = () => {
           error={!!formError.tags}
           helperText={formError.tags}
         />
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <input
+          type="file"
+          id="input-image"
+          onChange={handleImageUpload}
+          hidden
+        />
+        <span className={classes.fileInput}>{selectedFileName}</span>
+        <MuiTooltipButton
+          title="Post Image"
+          placement="bottom"
+          onClick={handleMuiButtonClick}
+          buttonText="Upload image"
+          startIcon={<CloudUpload />}
+          buttonClassName={`${classes.buttons}`}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          className={classes.buttons}
+        >
           Create
         </Button>
       </form>

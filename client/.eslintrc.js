@@ -56,6 +56,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-use-before-define': 'warn',
     '@typescript-eslint/naming-convention': 'off',
+    'react/require-default-props': 'off',
     'no-nested-ternary': 'off',
     'no-return-assign': 'error',
     'consistent-return': 'off',

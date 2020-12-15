@@ -9,6 +9,8 @@ import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import TerserJsPlugin from 'terser-webpack-plugin';
 
+import { proxy } from '../package.json';
+
 const webpackConf: webpack.ConfigurationFactory = (
   env: string | Record<string, string | number | boolean> | undefined,
   args: webpack.CliConfigOptions,
@@ -114,7 +116,7 @@ const webpackConf: webpack.ConfigurationFactory = (
       hot: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:8000',
+          target: proxy,
           pathRewrite: { '/api': '' },
         },
       },

@@ -12,16 +12,15 @@ const { PORT, MONGO_URL } = config;
 
 const app = express();
 connect(MONGO_URL);
-
-app.use(morgan('dev'));
-app.use(bodyParser.json({ limit: '30mb', extended: true }));
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-
 app.use(
   cors({
     origin: config.CLIENT_URL,
   }),
 );
+
+app.use(morgan('dev'));
+app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 
 app.use('/post', postRoute);
 

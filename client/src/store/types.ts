@@ -5,7 +5,7 @@ export const SET_ERROR = 'SET_ERROR';
 export const LOADING_UI = 'LOADING_UI';
 
 export interface PostIndexArray {
-  [key: string]: string;
+  [key: string]: string | ArrayBuffer;
 }
 
 export interface PostDetailTypes extends PostIndexArray {
@@ -13,15 +13,21 @@ export interface PostDetailTypes extends PostIndexArray {
   author: string;
   tags: string;
   body: string;
+  selectedFile: string | ArrayBuffer;
 }
 
 export interface GetPostsActionTypes<T> {
   type: typeof GET_POSTS;
-  payload: T[];
+  payload: T[] | null;
 }
 
 export interface CreatePostActionTypes<T> {
   type: typeof CREATE_POST;
+  payload: T;
+}
+
+export interface SetErrorActionTypes<T = string | null> {
+  type: typeof SET_ERROR;
   payload: T;
 }
 
@@ -30,4 +36,7 @@ export interface DataStateTypes<T> {
   error: null | string;
 }
 
-export type PostActions<T> = GetPostsActionTypes<T> | CreatePostActionTypes<T>;
+export type PostActions<T> =
+  | GetPostsActionTypes<T>
+  | CreatePostActionTypes<T>
+  | SetErrorActionTypes;

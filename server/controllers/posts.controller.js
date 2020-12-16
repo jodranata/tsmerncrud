@@ -11,10 +11,7 @@ export const getPosts = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const {
-    body: { post },
-  } = req;
-  console.log(req.body);
+  const { post } = req;
 
   const newPost = new Post(post);
   try {

@@ -25,7 +25,6 @@ const Form = () => {
     tags: '',
     author: '',
     body: '',
-    selectedFile: '',
   });
   const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer>('');
   const [selectedFileName, setSelectedFileName] = useState('Posts image');
@@ -57,7 +56,6 @@ const Form = () => {
       tags: '',
       author: '',
       body: '',
-      selectedFile: '',
     });
     dispatch(handleCreatePostAction(data));
   };

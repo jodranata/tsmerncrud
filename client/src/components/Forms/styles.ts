@@ -26,6 +26,8 @@ export default makeStyles((theme: Theme) => ({
   fileInput: {
     textAlign: 'center',
     margin: '10px 0',
+    maxWidth: '100%',
+    wordWrap: 'break-word',
   },
   buttonSubmit: {
     marginBottom: 10,

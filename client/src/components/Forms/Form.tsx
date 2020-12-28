@@ -1,26 +1,43 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
+import Collapse from '@material-ui/core/Collapse';
+
+import { debounce } from 'throttle-debounce';
 
 import useStyles from './styles';
 
 import MuiTooltipButton from '../MuiComponents/MuiTooltipButton';
+import MuiTagChips from '../MuiComponents/MuiTagChips';
+
 import { PostDetailTypes } from '../../store/types';
 import { handleCreatePostAction } from '../../store/actions/postActions';
+
 import toBase64 from '../../helpers/convertBase64';
+import separateTags from '../../helpers/separateTags';
+
+// import { TagsDataTypes } from '../types';
+
+interface FormErrorType {
+  title: string;
+  tags: string;
+  author: string;
+  body: string;
+}
 
 const Form = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [tags, setTags] = useState('');
+  const [tags, setTags] = useState<string[]>(['']);
   const [post, setPost] = useState('');
-  const [formError, setFormError] = useState<PostDetailTypes>({
+  const [formError, setFormError] = useState<FormErrorType>({
     title: '',
     tags: '',
     author: '',
@@ -28,6 +45,27 @@ const Form = () => {
   });
   const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer>('');
   const [selectedFileName, setSelectedFileName] = useState('Posts image');
+
+  const handleDebounceTagsArr = debounce(350, (val: string) => {
+    const tagsArr = separateTags(val);
+    setTags(tagsArr);
+  });
+
+  const handleSetTags = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    handleDebounceTagsArr(e.target.value);
+  };
+
+  // const handleOnDeleteTags = (chipToDelete: TagsDataTypes) => {
+  //   console.log(chipToDelete);
+  //   setTags((prevValue: string[]) =>
+  //     prevValue.filter((val: string, i: number) => {
+  //       if (i !== chipToDelete.key - 1) return val;
+  //       return false;
+  //     }),
+  //   );
+  // };
 
   const handleSubmit = (
     e:
@@ -42,14 +80,22 @@ const Form = () => {
       body: post,
       selectedFile,
     };
-    // const emptyField = Object.keys(data).filter((key: string) => !data[key]);
-    if (!title || !author || !post || !tags) {
-      return Object.keys(data).forEach((field: string) =>
-        setFormError((prevValue: PostDetailTypes) => ({
-          ...prevValue,
-          [field]: data[field] ? '' : `${field} is required`,
-        })),
-      );
+    const isTagEmpty = data.tags.filter((tag: string) => tag).length === 0;
+
+    if (!title || !author || !post || isTagEmpty) {
+      return Object.keys(data).forEach((field: string) => {
+        if (field === 'tags') {
+          setFormError((prevValue: FormErrorType) => ({
+            ...prevValue,
+            [field]: isTagEmpty ? `${field} is required` : '',
+          }));
+        } else {
+          setFormError((prevValue: FormErrorType) => ({
+            ...prevValue,
+            [field]: data[field] ? '' : `${field} is required`,
+          }));
+        }
+      });
     }
     setFormError({
       title: '',
@@ -133,24 +179,25 @@ const Form = () => {
           variant="outlined"
           id="tags"
           fullWidth
-          value={tags}
-          placeholder="tags"
-          onChange={(
-            e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-          ) => setTags(e.target.value)}
+          placeholder={`tags (For multiple tags separate it by ",")`}
+          onChange={handleSetTags}
           error={!!formError.tags}
           helperText={formError.tags}
         />
+        <Collapse in={tags.filter((tag: string) => tag).length > 0}>
+          <MuiTagChips tags={tags} />
+        </Collapse>
+
         <input
           type="file"
           id="input-image"
           onChange={handleImageUpload}
           hidden
         />
-        <span className={classes.fileInput}>{selectedFileName}</span>
+        <div className={classes.fileInput}>{selectedFileName}</div>
         <MuiTooltipButton
           title="Post Image"
-          placement="bottom"
+          placement="top-end"
           onClick={handleMuiButtonClick}
           buttonText="Upload image"
           startIcon={<CloudUpload />}

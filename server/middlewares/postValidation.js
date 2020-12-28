@@ -11,8 +11,7 @@ const formEmptyValidation = (req, res, next) => {
     body: { post },
   } = req;
   const postErr = {};
-  // if (!Object.prototype.hasOwnProperty.call(post, 'selectedFile') || !post.selectedFile) {
-  // }
+
   Object.keys(post)
     .filter(key => key !== 'selectedFile')
     .forEach(key => {
@@ -24,14 +23,16 @@ const formEmptyValidation = (req, res, next) => {
       .json({ success: false, message: 'Error creating post', error: postErr });
     throw new Error(postErr);
   }
-  if (Object.prototype.hasOwnProperty.call(post, 'selectedFile') || !post.selectedFile) {
+  if (!Object.prototype.hasOwnProperty.call(post, 'selectedFile') || !post.selectedFile) {
     const validPost = {
       ...post,
       selectedFile: '',
     };
+
     req.post = validPost;
     return next();
   }
+
   req.post = post;
   return next();
 };

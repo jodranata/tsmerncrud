@@ -5,13 +5,13 @@ export const SET_ERROR = 'SET_ERROR';
 export const LOADING_UI = 'LOADING_UI';
 
 export interface PostIndexArray {
-  [key: string]: string | ArrayBuffer | undefined;
+  [key: string]: string | ArrayBuffer | undefined | string[];
 }
 
 export interface PostDetailTypes extends PostIndexArray {
   title: string;
   author: string;
-  tags: string;
+  tags: string[];
   body: string;
   selectedFile?: string | ArrayBuffer;
 }

@@ -2,17 +2,7 @@ import React from 'react';
 import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
 import Button, { ButtonProps } from '@material-ui/core/Button';
 
-interface MuiTooltipButtonProps {
-  title: TooltipProps['title'];
-  placement: TooltipProps['placement'];
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  tooltipClassName?: string;
-  buttonClassName?: string;
-  color?: ButtonProps['color'];
-  buttonText: string;
-  startIcon?: ButtonProps['startIcon'];
-  variant?: ButtonProps['variant'];
-}
+import { MuiTooltipButtonProps } from '../types';
 
 const MuiTooltipButton = ({
   title,

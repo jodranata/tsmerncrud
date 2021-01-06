@@ -1,4 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import { validationResult } from 'express-validator';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
+import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const formEmptyValidation = (req, res, next) => {
   const errors = validationResult(req);
@@ -24,15 +32,21 @@ const formEmptyValidation = (req, res, next) => {
     throw new Error(postErr);
   }
   if (!Object.prototype.hasOwnProperty.call(post, 'selectedFile') || !post.selectedFile) {
-    const validPost = {
-      ...post,
-      selectedFile: '',
-    };
-
-    req.post = validPost;
-    return next();
+    return fs.readFile(
+      path.resolve(__dirname, '../images/721011.jpg'),
+      { encoding: 'base64' },
+      (err, encoded) => {
+        if (err) throw new Error('cannot open file');
+        const defImg = `data:image/jpeg;base64,${encoded}`;
+        const validPost = {
+          ...post,
+          selectedFile: defImg,
+        };
+        req.post = validPost;
+        return next();
+      },
+    );
   }
-
   req.post = post;
   return next();
 };

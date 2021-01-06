@@ -18,7 +18,7 @@ import MuiTagChips from '../MuiComponents/MuiTagChips';
 import { PostDetailTypes } from '../../store/types';
 import { handleCreatePostAction } from '../../store/actions/postActions';
 
-import toBase64 from '../../helpers/convertBase64';
+import encodeBase64 from '../../helpers/convertBase64';
 import separateTags from '../../helpers/separateTags';
 
 // import { TagsDataTypes } from '../types';
@@ -43,8 +43,8 @@ const Form = () => {
     author: '',
     body: '',
   });
-  const [selectedFile, setSelectedFile] = useState<string | ArrayBuffer>('');
-  const [selectedFileName, setSelectedFileName] = useState('Posts image');
+  const [selectedFile, setSelectedFile] = useState<string>('');
+  const [selectedFileName, setSelectedFileName] = useState('No File Chosen');
 
   const handleDebounceTagsArr = debounce(350, (val: string) => {
     const tagsArr = separateTags(val);
@@ -104,24 +104,23 @@ const Form = () => {
       body: '',
     });
     dispatch(handleCreatePostAction(data));
+    setTitle('');
+    setAuthor('');
+    setTags(['']);
+    setPost('');
+    setSelectedFile('');
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files ? e.target.files[0] : null;
     if (image) {
-      toBase64(
-        image,
-        (
-          err: string | null,
-          data?: string | ArrayBuffer | null | undefined,
-        ) => {
-          if (err) return setSelectedFileName(err);
-          if (data) {
-            setSelectedFileName(image.name);
-            setSelectedFile(data);
-          }
-        },
-      );
+      encodeBase64(image, (err: string | null, data?: string) => {
+        if (err) return setSelectedFileName(err);
+        if (data) {
+          setSelectedFileName(image.name);
+          setSelectedFile(data);
+        }
+      });
     }
   };
   const handleMuiButtonClick = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import Tooltip, { TooltipProps } from '@material-ui/core/Tooltip';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
 
 import { MuiTooltipButtonProps } from '../types';
 

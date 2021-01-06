@@ -1,52 +1,62 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles({
-  media: {
-    height: 0,
-    paddingTop: '56.25%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    backgroundBlendMode: 'darken',
-  },
-  border: {
-    border: 'solid',
-  },
-  fullHeightCard: {
-    height: '100%',
-  },
-  card: {
+  paper: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    borderRadius: '15px',
-    height: '100%',
+    padding: '7px 14px',
+    backgroundColor: 'rgb(249,249,249)',
+    alignItems: 'center',
     position: 'relative',
+    '& > *': {
+      margin: '8px 0',
+    },
   },
-  overlay: {
+  paperDelete: {
     position: 'absolute',
-    top: '20px',
-    left: '20px',
-    color: 'white',
+    top: '4px',
+    right: '3px',
   },
-  overlay2: {
-    position: 'absolute',
-    top: '20px',
-    right: '20px',
-    color: 'white',
+  paperHeader: {
+    width: '100%',
+    textTransform: 'capitalize',
+    '& > p': {
+      marginTop: '-3px',
+      marginLeft: '1px',
+      color: 'rgb(141,141,141)',
+    },
   },
-  grid: {
+  paperTitle: {
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    color: 'rgb(74,84,172)',
+    lineHeight: 1.2,
+  },
+  paperBody: {
+    width: '100%',
+    textAlign: 'justify',
+  },
+  paperImage: {
+    maxWidth: '100%',
+  },
+  paperFooter: {
     display: 'flex',
-  },
-  details: {
-    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: '20px',
+    width: '100%',
   },
-  title: {
-    padding: '0 16px',
+  paperChip: {
+    '& > *': {
+      margin: '0px 3px',
+    },
   },
-  cardActions: {
-    padding: '0 16px 8px 16px',
-    display: 'flex',
-    justifyContent: 'space-between',
+  paperAction: {
+    '&:hover': {
+      backgroundColor: 'rgba(245,0,87,0.18)',
+    },
+  },
+  paperIcon: {
+    color: 'rgba(192, 50, 69, 0.76)',
+    fontSize: '1rem',
   },
 });

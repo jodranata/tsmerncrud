@@ -18,9 +18,11 @@ import { handleGetPosts } from './store/actions/postActions';
 const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(handleGetPosts());
   }, [dispatch]);
+
   return (
     <Container maxWidth="lg">
       <AppBar position="static" className={classes.appBar}>

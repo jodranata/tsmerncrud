@@ -113,6 +113,7 @@ const webpackConf: webpack.ConfigurationFactory = (
       historyApiFallback: true,
       open: true,
       port: 3000,
+      hot: true,
       proxy: {
         '/api': {
           target: proxy,

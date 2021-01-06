@@ -1,11 +1,12 @@
 export const GET_POSTS = 'GET_POSTS';
 export const CREATE_POST = 'CREATE_POST';
 export const DELETE_POST = 'DELETE_POST';
+export const SET_LIKE = 'SET_LIKE';
 export const SET_ERROR = 'SET_ERROR';
 export const LOADING_UI = 'LOADING_UI';
 
 export interface PostIndexArray {
-  [key: string]: string | ArrayBuffer | undefined | string[];
+  [key: string]: string | ArrayBuffer | undefined | string[] | number | null;
 }
 
 export interface PostDetailTypes extends PostIndexArray {
@@ -13,7 +14,13 @@ export interface PostDetailTypes extends PostIndexArray {
   author: string;
   tags: string[];
   body: string;
-  selectedFile?: string | ArrayBuffer;
+  selectedFile?: string;
+}
+
+export interface PostDataResponseType extends PostDetailTypes {
+  likeCount: number;
+  createdAt: string;
+  _id: string;
 }
 
 export interface GetPostsActionTypes<T> {
@@ -31,6 +38,16 @@ export interface SetErrorActionTypes<T = string | null> {
   payload: T;
 }
 
+export interface DeletePostActionTypes<T> {
+  type: typeof DELETE_POST;
+  payload: T;
+}
+
+export interface SetLikePostActionTypes<T> {
+  type: typeof SET_LIKE;
+  payload: T;
+}
+
 export interface DataStateTypes<T> {
   posts: T[] | null;
   error: null | string;
@@ -39,4 +56,6 @@ export interface DataStateTypes<T> {
 export type PostActions<T> =
   | GetPostsActionTypes<T>
   | CreatePostActionTypes<T>
-  | SetErrorActionTypes;
+  | SetErrorActionTypes
+  | DeletePostActionTypes<T>
+  | SetLikePostActionTypes<T>;
